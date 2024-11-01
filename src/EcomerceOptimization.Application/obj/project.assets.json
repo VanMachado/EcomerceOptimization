@@ -1,0 +1,123 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "EcomerceOptimization.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/EcomerceOptimization.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EcomerceOptimization.Domain.dll": {}
+        }
+      },
+      "EcomerceOptimization.Infraestructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/EcomerceOptimization.Infraestructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EcomerceOptimization.Infraestructure.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EcomerceOptimization.Domain/1.0.0": {
+      "type": "project",
+      "path": "../EcomerceOptimization.Domain/EcomerceOptimization.Domain.csproj",
+      "msbuildProject": "../EcomerceOptimization.Domain/EcomerceOptimization.Domain.csproj"
+    },
+    "EcomerceOptimization.Infraestructure/1.0.0": {
+      "type": "project",
+      "path": "../EcomerceOptimization.Infraestructure/EcomerceOptimization.Infraestructure.csproj",
+      "msbuildProject": "../EcomerceOptimization.Infraestructure/EcomerceOptimization.Infraestructure.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "EcomerceOptimization.Domain >= 1.0.0",
+      "EcomerceOptimization.Infraestructure >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Machado\\.nuget\\packages\\": {},
+    "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj",
+      "projectName": "EcomerceOptimization.Application",
+      "projectPath": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj",
+      "packagesPath": "C:\\Users\\Machado\\.nuget\\packages\\",
+      "outputPath": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Machado\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Domain\\EcomerceOptimization.Domain.csproj": {
+              "projectPath": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Domain\\EcomerceOptimization.Domain.csproj"
+            },
+            "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj": {
+              "projectPath": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
