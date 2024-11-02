@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using EcomerceOptimization.Domain.Interfaces;
+using Polly.CircuitBreaker;
+using System.Data.SqlClient;
 
 namespace EcomerceOptimization.Application.Service
 {
@@ -27,9 +29,19 @@ namespace EcomerceOptimization.Application.Service
                     initializer.InitializeDatabase();
                     _logger.LogInformation("Database initialization completed successfully.");
                 }
-                catch (Exception ex)
+                catch (SqlException)
                 {
-                    _logger.LogError(ex, "Error occurred during database initialization.");
+                    _logger.LogError("Database is out of service. Please, try again latter");
+                    throw;
+                }
+                catch (BrokenCircuitException)
+                {
+                    _logger.LogError("Circuit breaker is open, the service is currently unavailable.");
+                    throw;
+                }
+                catch (Exception)
+                {
+                    _logger.LogError("Error occurred during database initialization.");
                 }
             }
         }

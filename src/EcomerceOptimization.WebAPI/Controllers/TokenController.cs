@@ -3,6 +3,7 @@ using EcomerceOptimization.Application.Result;
 using EcomerceOptimization.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Polly.CircuitBreaker;
 using System.Data.SqlClient;
 
 namespace EcomerceOptimization.WebAPI.Controllers
@@ -23,6 +24,9 @@ namespace EcomerceOptimization.WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]            
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]      
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public async Task<TokenResult> Login([FromBody] TokenRequestDTO tokenRequest)
         {
             try
@@ -39,9 +43,16 @@ namespace EcomerceOptimization.WebAPI.Controllers
                 _logger.LogError($"Database is out of service. Please, try again latter. {ex.Message}");
                 return TokenResult.Error();
             }
-            catch (Exception ex)
+            catch (BrokenCircuitException ex)
+            {                
+                _logger.LogError("Circuit breaker is open, the service is currently unavailable.");
+
+                return TokenResult.Error();
+            }
+            catch (Exception)
             {
-                throw new Exception($"Error: {ex.Message}");
+                _logger.LogError($"Something went wrong when calling API");
+                throw;
             }
         }
     }

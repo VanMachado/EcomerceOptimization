@@ -6,6 +6,8 @@ using EcomerceOptimization.Domain.Interfaces;
 using EcomerceOptimization.Infraestructure.Data.UOW.Service;
 using EcomerceOptimization.Domain.Entity;
 using EcomerceOptimization.Infraestructure.Data.Repository;
+using EcomerceOptimization.Application.Result;
+using Polly.CircuitBreaker;
 
 namespace EcomerceOptimization.Application.Service
 {
@@ -14,30 +16,52 @@ namespace EcomerceOptimization.Application.Service
         private readonly IConfiguration _configuration;
         private readonly ILogger<DatabaseinitializerService> _logger;
 
-        public DatabaseinitializerService(IConfiguration configuration, 
+        public DatabaseinitializerService(IConfiguration configuration,
                                   ILogger<DatabaseinitializerService> logger)
         {
             _configuration = configuration;
             _logger = logger;
         }
 
-        public async void InitializeDatabase()
-        {            
-            using (var uow = UserEcommerceServiceUoW.GetUnitOfWork())
-            {
-                var adminExists = await uow.GetRepository<UserEcommerceRepository>().CheckAdminQuery("admin", 1);
+        public async Task InitializeDatabase()
+        {
+            var retryPolicy = ResiliencePolicy.RetryPolicy(_logger);
+            var circuitBreakerPolicy = ResiliencePolicy.CircuitBreakerPolicy(_logger);
 
-                if (!adminExists)
-                {                    
-                    uow.GetRepository<UserEcommerceRepository>().InsertIntoAdminQuery().GetAwaiter().GetResult();
-
-                    _logger.LogInformation("Adim user sucefully inserted!");
-                }
-                else
+            await retryPolicy
+                .WrapAsync(circuitBreakerPolicy)
+                .ExecuteAsync(async () =>
                 {
-                    _logger.LogInformation("Admin user already exists. Actions not needed.");
-                }
-            }
+                    try
+                    {
+                        using (var uow = UserEcommerceServiceUoW.GetUnitOfWork())
+                        {
+
+                            var adminExists = await uow.GetRepository<UserEcommerceRepository>().CheckAdminQuery("admin", 1);
+
+                            if (!adminExists)
+                            {
+                                uow.GetRepository<UserEcommerceRepository>().InsertIntoAdminQuery().GetAwaiter().GetResult();
+
+                                _logger.LogInformation("Adim user sucefully inserted!");
+                            }
+                            else
+                            {
+                                _logger.LogInformation("Admin user already exists. Actions not needed.");
+                            }
+                        }
+                    }
+                    catch (BrokenCircuitException)
+                    {
+                        _logger.LogError("Circuit breaker is open, the service is currently unavailable.");                        
+                        throw;
+                    }
+                    catch (SqlException)
+                    {
+                        _logger.LogError("Database is out of service. Please, try again latter.");                        
+                        throw;
+                    }
+                });
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using EcomerceOptimization.Infraestructure.Data.Repository;
 using EcomerceOptimization.Infraestructure.Data.UOW.Service;
 using System.Data.SqlClient;
+using Polly.CircuitBreaker;
 
 namespace EcomerceOptimization.Application.Service
 {
@@ -94,6 +95,15 @@ namespace EcomerceOptimization.Application.Service
                     catch (SqlException ex)
                     {
                         _logger.LogError("Database is out of service. Please, try again latter");
+                        throw;
+                    }
+                    catch (BrokenCircuitException ex)
+                    {
+                        _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
+                        throw;
+                    }
+                    catch (Exception) 
+                    {
                         throw;
                     }
                 });

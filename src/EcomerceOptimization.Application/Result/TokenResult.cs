@@ -25,6 +25,6 @@ namespace EcomerceOptimization.Application.Result
             new TokenResult(TokenStatus.NotAuthorized, HttpStatusCode.Unauthorized, null);
 
         public static TokenResult Error() =>
-            new TokenResult(TokenStatus.Error, HttpStatusCode.ServiceUnavailable, "The server is out of service");
+            new TokenResult(TokenStatus.Error, HttpStatusCode.ServiceUnavailable, "Service temporarily unavailable. Please try again later.");
     }
 }

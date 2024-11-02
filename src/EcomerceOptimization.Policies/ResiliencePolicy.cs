@@ -8,6 +8,7 @@ public static class ResiliencePolicy
 {
     public static AsyncRetryPolicy RetryPolicy(ILogger logger) =>
         Policy.Handle<SqlException>()
+            .Or<BrokenCircuitException>()
             .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, (retryAttempt + 1))),
             onRetry: (exception, timeSpan, retryCount, context) =>
             {
@@ -16,6 +17,7 @@ public static class ResiliencePolicy
 
     public static AsyncCircuitBreakerPolicy CircuitBreakerPolicy(ILogger logger) =>
         Policy.Handle<SqlException>()
+            .Or<BrokenCircuitException>()
             .CircuitBreakerAsync(2, TimeSpan.FromMinutes(1),
             onBreak: (exception, timespan) =>
             {

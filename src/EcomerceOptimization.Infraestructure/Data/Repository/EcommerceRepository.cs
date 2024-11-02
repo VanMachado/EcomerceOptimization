@@ -2,6 +2,7 @@
 using EcomerceOptimization.Domain.Entity;
 using EcomerceOptimization.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
+using Polly.CircuitBreaker;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -41,8 +42,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
             {
                 _logger.LogError("Error when try connect to SQL Server");
                 throw new InvalidOperationException("Server out, please try later");
-            }
-
+            }            
         }
 
         public async Task<IEnumerable<string>> GetRoleByUserAsync(int userId)
@@ -67,7 +67,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
             {
                 _logger.LogError("Error when try connect to SQL Server");
                 throw new InvalidOperationException("Server out, please try later");
-            }
+            }            
         }
     }
 }
