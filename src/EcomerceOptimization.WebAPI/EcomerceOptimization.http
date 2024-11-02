@@ -1,6 +1,0 @@
-@EcomerceOptimization_HostAddress = http://localhost:5288
-
-GET {{EcomerceOptimization_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
