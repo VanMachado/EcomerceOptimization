@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "PChY/TmWnHo=",
+  "dgSpecHash": "xG1i8Phe7ao=",
   "success": true,
   "projectFilePath": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Domain\\EcomerceOptimization.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Machado\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,7 +1,36 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\_Repos\\EcomerceOptimization\\EcomerceOptimization\\",
-  "Documents": [],
+  "WorkspaceRootPath": "D:\\_Repos\\EcomerceOptimization\\src\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.infraestructure\\data\\uow\\service\\userecommerceserviceuow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|solutionrelative:ecomerceoptimization.infraestructure\\data\\uow\\service\\userecommerceserviceuow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.infraestructure\\data\\repository\\userecommercerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|solutionrelative:ecomerceoptimization.infraestructure\\data\\repository\\userecommercerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.infraestructure\\data\\repository\\ecommercerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|solutionrelative:ecomerceoptimization.infraestructure\\data\\repository\\ecommercerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{55F0D1F6-2F45-4082-AB51-68572ACA89AF}|EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.application\\service\\databaseinitializerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{55F0D1F6-2F45-4082-AB51-68572ACA89AF}|EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj|solutionrelative:ecomerceoptimization.application\\service\\databaseinitializerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{55F0D1F6-2F45-4082-AB51-68572ACA89AF}|EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.application\\service\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{55F0D1F6-2F45-4082-AB51-68572ACA89AF}|EcomerceOptimization.Application\\EcomerceOptimization.Application.csproj|solutionrelative:ecomerceoptimization.application\\service\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}|EcomerceOptimization.WebAPI\\EcomerceOptimization.WebAPI.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.webapi\\configs\\infraconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}|EcomerceOptimization.WebAPI\\EcomerceOptimization.WebAPI.csproj|solutionrelative:ecomerceoptimization.webapi\\configs\\infraconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|d:\\_repos\\ecomerceoptimization\\src\\ecomerceoptimization.infraestructure\\data\\uow\\unitofworkconnectionstringpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA458F29-E350-45BD-AA13-FF033A7915C0}|EcomerceOptimization.Infraestructure\\EcomerceOptimization.Infraestructure.csproj|solutionrelative:ecomerceoptimization.infraestructure\\data\\uow\\unitofworkconnectionstringpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +38,104 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EcommerceRepository.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\Repository\\EcommerceRepository.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Infraestructure\\Data\\Repository\\EcommerceRepository.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\Repository\\EcommerceRepository.cs",
+              "RelativeToolTip": "EcomerceOptimization.Infraestructure\\Data\\Repository\\EcommerceRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:45:55.892Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserEcommerceRepository.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\Repository\\UserEcommerceRepository.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Infraestructure\\Data\\Repository\\UserEcommerceRepository.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\Repository\\UserEcommerceRepository.cs",
+              "RelativeToolTip": "EcomerceOptimization.Infraestructure\\Data\\Repository\\UserEcommerceRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:42:15.794Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserEcommerceServiceUoW.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\UOW\\Service\\UserEcommerceServiceUoW.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Infraestructure\\Data\\UOW\\Service\\UserEcommerceServiceUoW.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\UOW\\Service\\UserEcommerceServiceUoW.cs",
+              "RelativeToolTip": "EcomerceOptimization.Infraestructure\\Data\\UOW\\Service\\UserEcommerceServiceUoW.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:46:28.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\Service\\TokenService.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Application\\Service\\TokenService.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\Service\\TokenService.cs",
+              "RelativeToolTip": "EcomerceOptimization.Application\\Service\\TokenService.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:43:20.634Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "InfraConfig.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.WebAPI\\Configs\\InfraConfig.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.WebAPI\\Configs\\InfraConfig.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.WebAPI\\Configs\\InfraConfig.cs",
+              "RelativeToolTip": "EcomerceOptimization.WebAPI\\Configs\\InfraConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:42:03.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UnitOfWorkConnectionStringPool.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\UOW\\UnitOfWorkConnectionStringPool.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Infraestructure\\Data\\UOW\\UnitOfWorkConnectionStringPool.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Infraestructure\\Data\\UOW\\UnitOfWorkConnectionStringPool.cs",
+              "RelativeToolTip": "EcomerceOptimization.Infraestructure\\Data\\UOW\\UnitOfWorkConnectionStringPool.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:41:47.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DatabaseinitializerService.cs",
+              "DocumentMoniker": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\Service\\DatabaseinitializerService.cs",
+              "RelativeDocumentMoniker": "EcomerceOptimization.Application\\Service\\DatabaseinitializerService.cs",
+              "ToolTip": "D:\\_Repos\\EcomerceOptimization\\src\\EcomerceOptimization.Application\\Service\\DatabaseinitializerService.cs",
+              "RelativeToolTip": "EcomerceOptimization.Application\\Service\\DatabaseinitializerService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T19:41:30.074Z",
+              "EditorCaption": ""
             }
           ]
         }

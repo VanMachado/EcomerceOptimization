@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcomerceOptimization.WebAPI", "EcomerceOptimization\EcomerceOptimization.WebAPI.csproj", "{A242B5E5-E84E-4BB1-9F39-425F091F2D83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcomerceOptimization.Domain", "EcomerceOptimization.Domain\EcomerceOptimization.Domain.csproj", "{A5F83001-E56B-42EE-A0C0-BEE2CC750074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcomerceOptimization.Domain", "EcomerceOptimization.Domain\EcomerceOptimization.Domain.csproj", "{A5F83001-E56B-42EE-A0C0-BEE2CC750074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcomerceOptimization.Infraestructure", "EcomerceOptimization.Infraestructure\EcomerceOptimization.Infraestructure.csproj", "{CA458F29-E350-45BD-AA13-FF033A7915C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcomerceOptimization.Infraestructure", "EcomerceOptimization.Infraestructure\EcomerceOptimization.Infraestructure.csproj", "{CA458F29-E350-45BD-AA13-FF033A7915C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcomerceOptimization.Application", "EcomerceOptimization.Application\EcomerceOptimization.Application.csproj", "{55F0D1F6-2F45-4082-AB51-68572ACA89AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcomerceOptimization.Application", "EcomerceOptimization.Application\EcomerceOptimization.Application.csproj", "{55F0D1F6-2F45-4082-AB51-68572ACA89AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcomerceOptimization.WebAPI", "EcomerceOptimization.WebAPI\EcomerceOptimization.WebAPI.csproj", "{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcomerceOptimization.Policies", "EcomerceOptimization.Policies\EcomerceOptimization.Policies.csproj", "{D8616487-77DE-4933-AAE1-29E30AAF4CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A242B5E5-E84E-4BB1-9F39-425F091F2D83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A242B5E5-E84E-4BB1-9F39-425F091F2D83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A242B5E5-E84E-4BB1-9F39-425F091F2D83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A242B5E5-E84E-4BB1-9F39-425F091F2D83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A5F83001-E56B-42EE-A0C0-BEE2CC750074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5F83001-E56B-42EE-A0C0-BEE2CC750074}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5F83001-E56B-42EE-A0C0-BEE2CC750074}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{55F0D1F6-2F45-4082-AB51-68572ACA89AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F0D1F6-2F45-4082-AB51-68572ACA89AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F0D1F6-2F45-4082-AB51-68572ACA89AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF417DE-AF15-47DC-8D0C-E9A3325B1D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8616487-77DE-4933-AAE1-29E30AAF4CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8616487-77DE-4933-AAE1-29E30AAF4CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8616487-77DE-4933-AAE1-29E30AAF4CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8616487-77DE-4933-AAE1-29E30AAF4CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

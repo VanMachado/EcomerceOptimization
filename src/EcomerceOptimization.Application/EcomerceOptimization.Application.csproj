@@ -3,18 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="Result\" />
-    <Folder Include="Service\" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EcomerceOptimization.Domain\EcomerceOptimization.Domain.csproj" />
     <ProjectReference Include="..\EcomerceOptimization.Infraestructure\EcomerceOptimization.Infraestructure.csproj" />
+    <ProjectReference Include="..\EcomerceOptimization.Policies\EcomerceOptimization.Policies.csproj" />
   </ItemGroup>
 
 </Project>
