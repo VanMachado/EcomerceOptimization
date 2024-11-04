@@ -34,14 +34,14 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        using (var uow = UserEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceServiceUoW.GetUnitOfWork())
                         {
 
-                            var adminExists = await uow.GetRepository<UserEcommerceRepository>().CheckAdminQuery("admin", 1);
+                            var adminExists = await uow.GetRepository<EcommerceRepository>().CheckAdminQueryAsync("admin", 1);
 
                             if (!adminExists)
                             {
-                                uow.GetRepository<UserEcommerceRepository>().InsertIntoAdminQuery().GetAwaiter().GetResult();
+                                uow.GetRepository<EcommerceRepository>().InsertIntoAdminQueryAsync().GetAwaiter().GetResult();
 
                                 _logger.LogInformation("Adim user sucefully inserted!");
                             }

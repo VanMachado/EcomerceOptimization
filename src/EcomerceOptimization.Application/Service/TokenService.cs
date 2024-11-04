@@ -39,10 +39,10 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        using (var uow = EcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = TokenEcommerceServiceUoW.GetUnitOfWork())
                         {
 
-                            var user = await uow.GetRepository<EcommerceRepository>().GetTokenByUserAsync(email, password);
+                            var user = await uow.GetRepository<TokenEcommerceRepository>().GetTokenByUserAsync(email, password);
 
                             if (_cache.TryGetValue(email, out string cachedToken) && VerifyPassword(password, user.Password))
                             {
@@ -58,7 +58,7 @@ namespace EcomerceOptimization.Application.Service
                                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                                 };
 
-                                var userRoles = await uow.GetRepository<EcommerceRepository>().GetRoleByUserAsync(user.Id);
+                                var userRoles = await uow.GetRepository<TokenEcommerceRepository>().GetRoleByUserAsync(user.Id);
 
                                 foreach (var role in userRoles)
                                 {
