@@ -10,6 +10,7 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW.Service
     {
         private static string _connectionStringName = "EO-DEV-SQL";        
         private static IDbConnection _connection = null;
+        private static IDbTransaction _transaction = null;
         private static UnitOfWork _unitOfWork = null;        
 
         public static UnitOfWork GetUnitOfWork()
@@ -19,7 +20,9 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW.Service
                 _connection = new SqlConnection(UnitOfWorkConnectionStringPool.GetConnectionString(_connectionStringName));
                 _connection.Open();
 
-                _unitOfWork = new UnitOfWork(_connection, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
+                _transaction = _connection.BeginTransaction();
+
+                _unitOfWork = new UnitOfWork(_connection, _transaction, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
                 _unitOfWork.SetRepository(new TokenEcommerceRepository(_unitOfWork));
             }
 

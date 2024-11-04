@@ -1,87 +1,163 @@
-﻿using AutoMapper;
-using Dapper;
+﻿using Dapper;
 using EcomerceOptimization.Domain.Entity;
 using EcomerceOptimization.Domain.Entity.DTO;
 using EcomerceOptimization.Domain.Interfaces;
+using System.Collections.Generic;
 using System.Data;
 
 namespace EcomerceOptimization.Infraestructure.Data.Repository
 {
     public class EcommerceRepository : IEcommerceRepository
     {
-        private readonly IUnitOfWork _unitOfWork = null;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EcommerceRepository()
-        {
+        {                
         }
 
-        public EcommerceRepository(IUnitOfWork unitOfWork,
-                                   IMapper mapper)
+        public EcommerceRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+            _unitOfWork = unitOfWork;            
+        }   
+        
+        public async Task<IEnumerable<ClientEcommerceDTO>> GetAllClientsAsync()
+        {            
+            var get = @"SELECT TOP (1000) [Id]
+                          ,[NomeCompleto]
+                          ,[Email]
+                      FROM [Ecommerce].[dbo].[ClientsEcommerce]";
 
-        public async Task<bool> CheckAdminQueryAsync(string NomeCompleto, int RoleId)
-        {
-            string checkAdminQuery = @"
-                    SELECT COUNT(1) 
-                    FROM [Ecommerce].[dbo].[UsersEcommerce] 
-                    WHERE NomeCompleto = @NomeCompleto AND RoleId = @RoleId"
-            ;
-
-            var result = await _unitOfWork.Connection.ExecuteScalarAsync<int>(
-                   sql: checkAdminQuery,
-                   param: new { NomeCompleto, RoleId },
-                   transaction: _unitOfWork.Transaction,
-                   commandTimeout: _unitOfWork.CommandTimeout,
-                   commandType: CommandType.Text
-                   ).ConfigureAwait(false) > 0;
-
-            return result;            
-        }
-
-        public async Task InsertIntoAdminQueryAsync()
-        {
-            string password = "Admin@123";
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
-            string insertAdminQuery = @"
-                    INSERT INTO [Ecommerce].[dbo].[UsersEcommerce] (RoleId, NomeCompleto, Password)
-                    VALUES (@RoleId, @NomeCompleto, @Password)";
-
-            await _unitOfWork.Connection.ExecuteAsync(insertAdminQuery, new
+            try
             {
-                RoleId = 1,
-                NomeCompleto = "admin",
-                Password = hashedPassword
-            });
+                var clients = await _unitOfWork.Connection.QueryAsync<ClientEcommerceDTO>(
+                    sql: get,                    
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);
+
+                return clients;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task CreateClientEcommerceAsync(ClientEcommerceDTO dto)
+        public async Task<ClientEcommerceDTO> GetClientByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: id);
+
+            var get = @"SELECT * FROM [Ecommerce].[dbo].[ClientsEcommerce] WHERE Id = @Id";
+
+            try
+            {
+                var client = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<ClientEcommerceDTO>(
+                    sql: get,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);                
+
+                return client;
+            }
+            catch (Exception)
+            {                
+                throw;
+            }            
         }
 
-        public Task<bool> DeleteClientEcommerceAsync(int id)
-        {
-            throw new NotImplementedException();
+
+        public async Task<bool> CreateClientEcommerceAsync(ClientEcommerceDTO dto)
+        {            
+            var parameters = new DynamicParameters();
+
+            parameters.Add(name: "@NomeCompleto", dbType: DbType.String, direction: ParameterDirection.Input, value: dto.NomeCompleto);
+            parameters.Add(name: "@Email", dbType: DbType.String, direction: ParameterDirection.Input, value: dto.Email);
+
+            var insert = @"INSERT INTO [Ecommerce].[dbo].[ClientsEcommerce] (NomeCompleto, Email)
+                        VALUES (@NomeCompleto, @Email)";
+
+            try
+            {
+                await _unitOfWork.Connection.ExecuteAsync(
+                    sql: insert,
+                    param: parameters,                    
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);  
+                _unitOfWork.Commit();
+                                       
+                return true;
+            }
+            catch (Exception)
+            {                
+                _unitOfWork.RollBack();
+                throw;
+            }
         }
 
-        public Task<IEnumerable<ClientEcommerce>> GetAllClientsAsync()
+        public async Task<ClientEcommerceDTO> UpdateClientEcommerceAsync(ClientEcommerceDTO dto)
         {
-            throw new NotImplementedException();
+            var parameters = new DynamicParameters();
+            
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: dto.Id);
+            parameters.Add(name: "@NomeCompleto", dbType: DbType.String, direction: ParameterDirection.Input, value: dto.NomeCompleto);
+            parameters.Add(name: "@Email", dbType: DbType.String, direction: ParameterDirection.Input, value: dto.Email);
+
+            var update = @"UPDATE [Ecommerce].[dbo].[ClientsEcommerce] 
+                         SET NomeCompleto = @NomeCompleto
+                             , Email = @Email
+                         WHERE Id = @Id";
+
+            try
+            {
+                await _unitOfWork.Connection.ExecuteAsync(
+                    sql: update,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);
+                _unitOfWork.Commit();
+
+                return await GetClientByIdAsync(dto.Id);
+            }
+            catch (Exception)
+            {
+                _unitOfWork.RollBack();
+                throw;
+            }            
         }
 
-        public Task<ClientEcommerce> GetClientByIdAsync(int id)
+        public async Task<bool> DeleteClientEcommerceAsync(int id)
         {
-            throw new NotImplementedException();
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: id);
+
+            var delete = @"DELETE FROM [Ecommerce].[dbo].[ClientsEcommerce] WHERE Id = @Id";
+
+            try
+            {
+                await _unitOfWork.Connection.ExecuteAsync(
+                    sql: delete,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);        
+                _unitOfWork.Commit();
+
+                return true;
+            }
+            catch (Exception)
+            {                      
+                _unitOfWork.RollBack();
+                throw;
+            }
         }        
-
-        public Task UpdateClientEcommerceAsync(ClientEcommerceDTO dto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
