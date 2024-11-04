@@ -1,4 +1,6 @@
-﻿namespace EcomerceOptimization.Domain.Entity
+﻿using EcomerceOptimization.Domain.Entity.Enum;
+
+namespace EcomerceOptimization.Domain.Entity
 {
     public class UserEcommerce
     {

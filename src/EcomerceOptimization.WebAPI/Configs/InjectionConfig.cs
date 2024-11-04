@@ -2,17 +2,16 @@
 using Polly;
 using EcomerceOptimization.Domain.Interfaces;
 using EcomerceOptimization.Application.Service;
-using EcomerceOptimization.Infraestructure.Data.Repository;
-using EcomerceOptimization.Infraestructure.Data.UOW;
-using EcomerceOptimization.Infraestructure.Data.UOW.Service;
 
 namespace EcomerceOptimization.WebAPI.Configs
 {
     public static class InjectionConfig
     {        
         public static IServiceCollection RegisterServices(this IServiceCollection services, WebApplicationBuilder builder)
-        {
-            services.AddTransient<ITokenService, TokenService>();            
+        {            
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserEcommerceService, UserEcommerceService>();            
+            services.AddTransient<IOrderEcommerceService, OrderEcommerceService>();            
 
             return services;
         }        

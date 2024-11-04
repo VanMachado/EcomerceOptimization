@@ -1,4 +1,6 @@
-﻿namespace EcomerceOptimization.Infraestructure.Data.UOW
+﻿using System.Data;
+
+namespace EcomerceOptimization.Infraestructure.Data.UOW
 {
     public static class UnitOfWorkConnectionStringPool
     {
@@ -26,7 +28,7 @@
         {
             var param = dbConnectionString[name];
             return param.CommnadTimeout;
-        }
+        }        
 
         internal struct UnitOfWorkConnectionStringPoolParameters
         {

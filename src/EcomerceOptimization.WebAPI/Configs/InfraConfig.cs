@@ -17,7 +17,8 @@ namespace EcomerceOptimization.WebAPI.Configs
 
             services.AddTransient<ITokenEcommerceRepository, TokenEcommerceRepository>();
             services.AddTransient<IEcommerceRepository, EcommerceRepository>();
-            services.AddSingleton<IDatabaseInitializer, DatabaseinitializerService>();
+            services.AddTransient<IInitializerEcommerceRepository, InitializerEcommerceRepository>();
+            services.AddSingleton<IDatabaseInitializer, DatabaseinitializerService>();            
             services.AddHostedService<DatabaseInitializerHostedService>();
         }
     }
