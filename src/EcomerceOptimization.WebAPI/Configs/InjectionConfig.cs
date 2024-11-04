@@ -11,6 +11,7 @@ namespace EcomerceOptimization.WebAPI.Configs
         {            
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IUserEcommerceService, UserEcommerceService>();            
+            services.AddTransient<IOrderEcommerceService, OrderEcommerceService>();            
 
             return services;
         }        

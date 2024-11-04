@@ -158,6 +158,61 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                 _unitOfWork.RollBack();
                 throw;
             }
-        }        
+        }
+
+        public async Task<bool> CreateOrderAsync(OrderEcommerceDTO dto)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@NomeProduto", dbType: DbType.String, direction: ParameterDirection.Input, value: dto.NomeProduto);
+            parameters.Add(name: "@Preco", dbType: DbType.Double, direction: ParameterDirection.Input, value: dto.Preco);
+            parameters.Add(name: "@ClientId", dbType: DbType.Int32, direction: ParameterDirection.Input, value: dto.ClientId);
+
+            var insert = @"INSERT INTO [Ecommerce].[dbo].[OrdersEcommerce] (NomeProduto, Preco, ClientId)
+                        VALUES (@NomeProduto, @Preco, @CLientId)";
+
+            try
+            {
+                await _unitOfWork.Connection.ExecuteAsync(
+                    sql: insert,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);
+                _unitOfWork.Commit();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                _unitOfWork.RollBack();
+                throw;
+            }
+        }
+
+        public async Task<OrderEcommerceDTO> GetOrderByIdAsync(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: id);
+
+            var get = @"SELECT * FROM [Ecommerce].[dbo].[OrdersEcommerce] WHERE Id = @Id";
+
+            try
+            {
+                var order = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<OrderEcommerceDTO>(
+                    sql: get,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);
+
+                return order;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

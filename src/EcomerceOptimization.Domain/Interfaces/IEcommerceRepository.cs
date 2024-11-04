@@ -10,5 +10,7 @@ namespace EcomerceOptimization.Domain.Interfaces
         Task<bool> CreateClientEcommerceAsync(ClientEcommerceDTO dto);
         Task<ClientEcommerceDTO> UpdateClientEcommerceAsync(ClientEcommerceDTO dto);
         Task<bool> DeleteClientEcommerceAsync(int id);
+        Task<bool> CreateOrderAsync(OrderEcommerceDTO dto);
+        Task<OrderEcommerceDTO> GetOrderByIdAsync(int id);
     }
 }
