@@ -1,4 +1,5 @@
 using EcomerceOptimization.WebAPI.Configs;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,14 +10,13 @@ builder.Services.AddCustomHttpClient();
 builder.Services.RegisterServices(builder);
 builder.Services.RegisterInfraestructure(builder.Configuration);
 builder.Services.RegisterAuthentication(builder.Configuration);
+builder.Services.RegisterApiVersioning();
+builder.Services.AddSwaggerConfig();
 
 var app = builder.Build();
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerConfig(provider, builder.Configuration);
 
 app.UseHttpsRedirection();
 

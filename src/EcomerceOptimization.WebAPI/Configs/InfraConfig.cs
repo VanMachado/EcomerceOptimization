@@ -15,8 +15,8 @@ namespace EcomerceOptimization.WebAPI.Configs
             var connectionString = configuration.GetConnectionString(EODB);
             UnitOfWorkConnectionStringPool.SetConnectionString(EODB, connectionString, commandTimeout);
 
+            services.AddTransient<ITokenEcommerceRepository, TokenEcommerceRepository>();
             services.AddTransient<IEcommerceRepository, EcommerceRepository>();
-            services.AddTransient<IUserEcommerceRepository, UserEcommerceRepository>();
             services.AddSingleton<IDatabaseInitializer, DatabaseinitializerService>();
             services.AddHostedService<DatabaseInitializerHostedService>();
         }

@@ -22,10 +22,10 @@
             return param.ConnectionString;
         }
 
-        public static string GetConnectionTimeout(string name)
+        public static int GetConnectionTimeout(string name)
         {
             var param = dbConnectionString[name];
-            return param.ConnectionString;
+            return param.CommnadTimeout;
         }
 
         internal struct UnitOfWorkConnectionStringPoolParameters

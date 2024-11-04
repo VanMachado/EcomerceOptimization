@@ -1,13 +1,12 @@
 ﻿namespace EcomerceOptimization.Domain.Entity
 {
-    public class UserEcommerce
+    public class ClientEcommerce
     {
         public int Id { get; set; }
-        public RoleId RoleId { get; set; }
         public string NomeCompleto { get; set; }
-        public string Password { get; set; }
+        public string Email { get; set; }
 
-        public UserEcommerce()
+        public ClientEcommerce()
         {
         }
     }

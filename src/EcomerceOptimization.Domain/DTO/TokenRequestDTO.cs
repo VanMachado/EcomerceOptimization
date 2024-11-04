@@ -1,4 +1,4 @@
-﻿namespace EcomerceOptimization.Application.DTO
+﻿namespace EcomerceOptimization.Domain.Entity.DTO
 {
     public class TokenRequestDTO
     {

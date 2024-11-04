@@ -22,7 +22,7 @@ namespace EcomerceOptimization.Application.Result
             new TokenResult(TokenStatus.Success, HttpStatusCode.OK, token);
 
         public static TokenResult NotAuthorized() =>
-            new TokenResult(TokenStatus.NotAuthorized, HttpStatusCode.Unauthorized, null);
+            new TokenResult(TokenStatus.NotAuthorized, HttpStatusCode.Unauthorized, "Unauthorized user");
 
         public static TokenResult Error() =>
             new TokenResult(TokenStatus.Error, HttpStatusCode.ServiceUnavailable, "Service temporarily unavailable. Please try again later.");

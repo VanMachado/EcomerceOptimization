@@ -1,73 +1,87 @@
-﻿using Dapper;
+﻿using AutoMapper;
+using Dapper;
 using EcomerceOptimization.Domain.Entity;
+using EcomerceOptimization.Domain.Entity.DTO;
 using EcomerceOptimization.Domain.Interfaces;
-using Microsoft.Extensions.Logging;
-using Polly.CircuitBreaker;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace EcomerceOptimization.Infraestructure.Data.Repository
 {
     public class EcommerceRepository : IEcommerceRepository
     {
         private readonly IUnitOfWork _unitOfWork = null;
-        private readonly ILogger<EcommerceRepository> _logger;
+        private readonly IMapper _mapper;
 
         public EcommerceRepository()
         {
         }
 
-        public EcommerceRepository(IUnitOfWork unitOfWork)
+        public EcommerceRepository(IUnitOfWork unitOfWork,
+                                   IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<UserEcommerce> GetTokenByUserAsync(string nomeCompleto, string password)
+        public async Task<bool> CheckAdminQueryAsync(string NomeCompleto, int RoleId)
         {
-            try
-            {
-                var query = @"SELECT * FROM UsersEcommerce WHERE NomeCompleto = @NomeCompleto";
+            string checkAdminQuery = @"
+                    SELECT COUNT(1) 
+                    FROM [Ecommerce].[dbo].[UsersEcommerce] 
+                    WHERE NomeCompleto = @NomeCompleto AND RoleId = @RoleId"
+            ;
 
-                var result = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<UserEcommerce>(
-                    sql: query,
-                    param: new { nomeCompleto },
-                    transaction: _unitOfWork.Transaction,
-                    commandTimeout: _unitOfWork.CommandTimeout,
-                    commandType: CommandType.Text
-                    ).ConfigureAwait(false);
-
-                return result;
-            }
-            catch (SqlException ex)
-            {
-                _logger.LogError("Error when try connect to SQL Server");
-                throw new InvalidOperationException("Server out, please try later");
-            }            
-        }
-
-        public async Task<IEnumerable<string>> GetRoleByUserAsync(int userId)
-        {
-            try
-            {
-                var query = @"SELECT R.RoleName FROM RoleNameEcommerce R
-                                INNER JOIN UsersEcommerce UR ON R.Id = UR.RoleId
-                                WHERE UR.Id = @UserId";
-
-                var result = await _unitOfWork.Connection.QueryAsync<string>(
-                   sql: query,
-                   param: new { userId },
+            var result = await _unitOfWork.Connection.ExecuteScalarAsync<int>(
+                   sql: checkAdminQuery,
+                   param: new { NomeCompleto, RoleId },
                    transaction: _unitOfWork.Transaction,
                    commandTimeout: _unitOfWork.CommandTimeout,
                    commandType: CommandType.Text
-                   ).ConfigureAwait(false);
+                   ).ConfigureAwait(false) > 0;
 
-                return result;
-            }
-            catch (SqlException ex)
+            return result;            
+        }
+
+        public async Task InsertIntoAdminQueryAsync()
+        {
+            string password = "Admin@123";
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+            string insertAdminQuery = @"
+                    INSERT INTO [Ecommerce].[dbo].[UsersEcommerce] (RoleId, NomeCompleto, Password)
+                    VALUES (@RoleId, @NomeCompleto, @Password)";
+
+            await _unitOfWork.Connection.ExecuteAsync(insertAdminQuery, new
             {
-                _logger.LogError("Error when try connect to SQL Server");
-                throw new InvalidOperationException("Server out, please try later");
-            }            
+                RoleId = 1,
+                NomeCompleto = "admin",
+                Password = hashedPassword
+            });
+        }
+
+        public Task CreateClientEcommerceAsync(ClientEcommerceDTO dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteClientEcommerceAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ClientEcommerce>> GetAllClientsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ClientEcommerce> GetClientByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }        
+
+        public Task UpdateClientEcommerceAsync(ClientEcommerceDTO dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }
