@@ -10,8 +10,7 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW.Service
     public class ClientEcommerceServiceUoW
     {
         private static string _connectionStringName = "EO-DEV-SQL";
-        private static IDbConnection _connection = null;
-        private static IDbTransaction _transaction = null;
+        private static IDbConnection _connection = null;        
         private static UnitOfWork _unitOfWork = null;
 
         public static UnitOfWork GetUnitOfWork()
@@ -21,29 +20,14 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW.Service
             {                
                 _connection = new SqlConnection(UnitOfWorkConnectionStringPool.GetConnectionString(_connectionStringName));
                 _connection.Open();
-
-                _transaction = _connection.BeginTransaction();
-
-                _unitOfWork = new UnitOfWork(_connection, _transaction, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
+                                
+                _unitOfWork = new UnitOfWork(_connection, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
                 _unitOfWork.SetRepository(new EcommerceRepository(_unitOfWork));
             }            
 
             return _unitOfWork;
         }
-
-        public static void ResetUnitOfWork()
-        {
-            _unitOfWork?.Dispose();
-            _connection?.Dispose();
-
-            _connection = new SqlConnection(UnitOfWorkConnectionStringPool.GetConnectionString(_connectionStringName));
-            _connection.Open();
-            _transaction = _connection.BeginTransaction();
-
-            _unitOfWork = new UnitOfWork(_connection, _transaction, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
-            _unitOfWork.SetRepository(new EcommerceRepository(_unitOfWork));
-        }
-
+               
         public void Dispose()
         {
             _unitOfWork.Dispose();

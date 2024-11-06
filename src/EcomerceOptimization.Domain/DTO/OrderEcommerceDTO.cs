@@ -3,8 +3,7 @@
 namespace EcomerceOptimization.Domain.Entity.DTO
 {
     public class OrderEcommerceDTO
-    {
-        [JsonIgnore]
+    {        
         public int Id { get; set; }
         public string NomeProduto { get; set; }
         public double Preco { get; set; }

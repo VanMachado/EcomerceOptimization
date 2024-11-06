@@ -64,7 +64,7 @@ namespace EcomerceOptimization.WebAPI.Extensions
                     var errorResponse = new ClientResult(
                             ClientStatus.Error,  
                             null,
-                            "Somenthing went wrong"
+                            "Client not Found!"
                     );
 
                     return new ObjectResult(errorResponse)

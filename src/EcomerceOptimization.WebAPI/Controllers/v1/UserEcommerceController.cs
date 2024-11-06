@@ -14,10 +14,10 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
     [Route("api/v{version:apiVersion}/ecommerce-optimization/user-ecommerce")]
     public class UserEcommerceController : ControllerBase
     {
-        private readonly IUserEcommerceService _service;
+        private readonly IClientEcommerceService _service;
         private readonly ILogger _logger;
 
-        public UserEcommerceController(IUserEcommerceService service,
+        public UserEcommerceController(IClientEcommerceService service,
                                       ILogger<UserEcommerceController> logger)
         {
             _service = service;
@@ -126,6 +126,10 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
                 if (await _service.DeleteClientAsync(id))
                     return ClientResult.Deleted().AsActionResult();
 
+                return ClientResult.Error().AsActionResult();
+            }
+            catch (NullReferenceException)
+            {
                 return ClientResult.Error().AsActionResult();
             }
             catch (Exception)

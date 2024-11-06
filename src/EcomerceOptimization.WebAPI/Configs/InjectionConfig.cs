@@ -10,7 +10,7 @@ namespace EcomerceOptimization.WebAPI.Configs
         public static IServiceCollection RegisterServices(this IServiceCollection services, WebApplicationBuilder builder)
         {            
             services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IUserEcommerceService, UserEcommerceService>();            
+            services.AddTransient<IClientEcommerceService, ClientEcommerceService>();            
             services.AddTransient<IOrderEcommerceService, OrderEcommerceService>();            
 
             return services;

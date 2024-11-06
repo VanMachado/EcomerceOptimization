@@ -1,8 +1,7 @@
 ﻿using Dapper;
-using EcomerceOptimization.Domain.Entity;
 using EcomerceOptimization.Domain.Entity.DTO;
+using EcomerceOptimization.Domain.Entity.Enum;
 using EcomerceOptimization.Domain.Interfaces;
-using System.Collections.Generic;
 using System.Data;
 
 namespace EcomerceOptimization.Infraestructure.Data.Repository
@@ -30,8 +29,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
             try
             {
                 var clients = await _unitOfWork.Connection.QueryAsync<ClientEcommerceDTO>(
-                    sql: get,                    
-                    transaction: _unitOfWork.Transaction,
+                    sql: get,                                        
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
                 ).ConfigureAwait(false);
@@ -55,8 +53,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
             {
                 var client = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<ClientEcommerceDTO>(
                     sql: get,
-                    param: parameters,
-                    transaction: _unitOfWork.Transaction,
+                    param: parameters,                    
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
                 ).ConfigureAwait(false);                
@@ -110,7 +107,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
 
             var update = @"UPDATE [Ecommerce].[dbo].[ClientsEcommerce] 
                          SET NomeCompleto = @NomeCompleto
-                             , Email = @Email
+                             ,Email = @Email
                          WHERE Id = @Id";
 
             try
@@ -122,7 +119,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
                 ).ConfigureAwait(false);
-                _unitOfWork.Commit();
+                _unitOfWork.Commit();                
 
                 return await GetClientByIdAsync(dto.Id);
             }
@@ -142,7 +139,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
 
             try
             {
-                await _unitOfWork.Connection.ExecuteAsync(
+                var result = await _unitOfWork.Connection.ExecuteAsync(
                     sql: delete,
                     param: parameters,
                     transaction: _unitOfWork.Transaction,
@@ -151,6 +148,9 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                 ).ConfigureAwait(false);        
                 _unitOfWork.Commit();
 
+                if(result != 1)
+                    return false;
+                
                 return true;
             }
             catch (Exception)
@@ -179,7 +179,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
                 ).ConfigureAwait(false);
-                _unitOfWork.Commit();
+                _unitOfWork.Commit();                
 
                 return true;
             }
@@ -208,6 +208,56 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                 ).ConfigureAwait(false);
 
                 return order;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task RegisterUpdateAsync()
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: DataBaseEnum.ClientsEcommerce);
+            parameters.Add(name: "@DataAtualizacao", dbType: DbType.DateTime, direction: ParameterDirection.Input, value: DateTime.Now);
+
+            var update = @"UPDATE [Ecommerce].[dbo].[ControleAtualizacao] 
+                         SET DataAtualizacao = @DataAtualizacao
+                         WHERE Id = @Id";
+
+            try
+            {
+                await _unitOfWork.Connection.ExecuteAsync(
+                    sql: update,
+                    param: parameters,
+                    transaction: _unitOfWork.Transaction,
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);
+                _unitOfWork.Commit();                                 
+            }
+            catch (Exception)
+            {
+                _unitOfWork.RollBack();
+                throw;
+            }            
+        }
+
+        public async Task<DateTime> GetUpdateTimeAsync()
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(name: "@Id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: DataBaseEnum.ClientsEcommerce);            
+
+            var query = @"SELECT [DataAtualizacao] FROM [Ecommerce].[dbo].[ControleAtualizacao] WHERE Id = @Id";
+
+            try
+            {
+                return await _unitOfWork.Connection.QueryFirstOrDefaultAsync<DateTime>(
+                    sql: query,
+                    param: parameters,                    
+                    commandTimeout: _unitOfWork.CommandTimeout,
+                    commandType: CommandType.Text
+                ).ConfigureAwait(false);                             
             }
             catch (Exception)
             {

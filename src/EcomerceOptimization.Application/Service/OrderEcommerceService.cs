@@ -10,14 +10,12 @@ using System.Data.SqlClient;
 namespace EcomerceOptimization.Application.Service
 {
     public class OrderEcommerceService : IOrderEcommerceService
-    {
-        private readonly IEcommerceRepository _repository;
+    {        
         private readonly IMemoryCache _cache;
         private readonly ILogger<TokenService> _logger;
 
-        public OrderEcommerceService(IEcommerceRepository repository, IMemoryCache cache, ILogger<TokenService> logger)
-        {
-            _repository = repository;
+        public OrderEcommerceService(IMemoryCache cache, ILogger<TokenService> logger)
+        {     
             _cache = cache;
             _logger = logger;
         }
@@ -32,11 +30,11 @@ namespace EcomerceOptimization.Application.Service
                 .ExecuteAsync(async () =>
                 {
                     try
-                    {
-                        OrderEcommerceServiceUoW.ResetUnitOfWork();
-
+                    {                        
                         using (var uow = OrderEcommerceServiceUoW.GetUnitOfWork())
                         {
+                            uow.BeginTransaction();
+
                             var result = await uow.GetRepository<EcommerceRepository>().CreateOrderAsync(dto);
                             _logger.LogInformation($"Order: {dto.Id} successfully created!");
 
@@ -70,11 +68,11 @@ namespace EcomerceOptimization.Application.Service
                 .ExecuteAsync(async () =>
                 {
                     try
-                    {
-                        OrderEcommerceServiceUoW.ResetUnitOfWork();
-
+                    {                        
                         using (var uow = OrderEcommerceServiceUoW.GetUnitOfWork())
                         {
+                            uow.BeginTransaction();
+
                             if (_cache.TryGetValue("order", out OrderEcommerceDTO cachedQuery))
                             {
                                 _logger.LogInformation("Client found it on user cache");

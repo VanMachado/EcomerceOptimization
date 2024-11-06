@@ -2,7 +2,7 @@
 
 namespace EcomerceOptimization.Domain.Interfaces
 {
-    public interface IUserEcommerceService
+    public interface IClientEcommerceService
     {
         Task<ClientEcommerceDTO> GetClientByIdAsync(int id);
         Task<IEnumerable<ClientEcommerceDTO>> GetClienstAsync();

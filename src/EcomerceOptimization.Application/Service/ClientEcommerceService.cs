@@ -1,4 +1,5 @@
-﻿using EcomerceOptimization.Domain.Entity.DTO;
+﻿using EcomerceOptimization.Domain.DTO;
+using EcomerceOptimization.Domain.Entity.DTO;
 using EcomerceOptimization.Domain.Interfaces;
 using EcomerceOptimization.Infraestructure.Data.Repository;
 using EcomerceOptimization.Infraestructure.Data.UOW.Service;
@@ -9,13 +10,15 @@ using System.Data.SqlClient;
 
 namespace EcomerceOptimization.Application.Service
 {
-    public class UserEcommerceService : IUserEcommerceService
+    public class ClientEcommerceService : IClientEcommerceService
     {
         private readonly IEcommerceRepository _repository;
         private readonly IMemoryCache _cache;
         private readonly ILogger<TokenService> _logger;
 
-        public UserEcommerceService(IEcommerceRepository repository, IMemoryCache cache, ILogger<TokenService> logger)
+        public ClientEcommerceService(IEcommerceRepository repository,
+                                   IMemoryCache cache,
+                                   ILogger<TokenService> logger)
         {
             _repository = repository;
             _cache = cache;
@@ -32,23 +35,47 @@ namespace EcomerceOptimization.Application.Service
                 .ExecuteAsync(async () =>
                 {
                     try
-                    {                        
+                    {
                         using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
-                        {                            
-                            if (_cache.TryGetValue("all_clients", out IEnumerable<ClientEcommerceDTO> cachedQuery))
+                        {
+                            if (_cache.TryGetValue("all_clients", out IEnumerable<CachedObjectDTO> cachedQuery))
                             {
-                                _logger.LogInformation("Clients found in cache.");
-                                return cachedQuery;
+                                var updateTime = await uow.GetRepository<EcommerceRepository>().GetUpdateTimeAsync();
+                                var checkDate = cachedQuery.Where(c => c.InsertDate >= updateTime).FirstOrDefault();
+
+                                if (checkDate != null)
+                                {
+                                    _logger.LogInformation("Clients found in cache.");
+                                    var clientCachingList = new List<ClientEcommerceDTO>();
+
+                                    foreach (var cachedObject in cachedQuery)
+                                        clientCachingList.Add(cachedObject.ClientDTO);
+
+                                    return clientCachingList;
+                                }
                             }
-                                                        
+
                             var result = await uow.GetRepository<EcommerceRepository>().GetAllClientsAsync();
                             _logger.LogInformation("Clients successfully retrieved from the database.");
-                                                        
-                            _cache.Set("all_clients", result, new MemoryCacheEntryOptions
+
+                            var listToCache = new List<CachedObjectDTO>();
+
+                            foreach (var client in result)
+                            {
+                                var cached = new CachedObjectDTO
+                                {
+                                    ClientDTO = client,
+                                    InsertDate = DateTime.Now
+                                };
+
+                                listToCache.Add(cached);
+                            }
+
+                            _cache.Set("all_clients", listToCache, new MemoryCacheEntryOptions
                             {
                                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3)
                             });
-                            _logger.LogInformation("Query stored in cache.");
+                            _logger.LogInformation("Query stored on cache.");
 
                             return result;
                         }
@@ -81,19 +108,30 @@ namespace EcomerceOptimization.Application.Service
                 .ExecuteAsync(async () =>
                 {
                     try
-                    {                        
+                    {
                         using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
                         {
-                            if (_cache.TryGetValue("client", out ClientEcommerceDTO cachedQuery))
+                            if (_cache.TryGetValue("client", out CachedObjectDTO cachedQuery))
                             {
-                                _logger.LogInformation("Client found it on user cache");
-                                return cachedQuery;
+                                var updateTime = await uow.GetRepository<EcommerceRepository>().GetUpdateTimeAsync();
+
+                                if (cachedQuery.InsertDate >= updateTime)
+                                {
+                                    _logger.LogInformation("Client found it on user cache");
+                                    return cachedQuery.ClientDTO;
+                                }
                             }
 
                             var result = await uow.GetRepository<EcommerceRepository>().GetClientByIdAsync(id);
-                            _logger.LogInformation($"Client: {result.NomeCompleto} successfully retrived!");
+                            _logger.LogInformation($"Client: {result.NomeCompleto} successfully retrived on Database!");
 
-                            _cache.Set("client", result, new MemoryCacheEntryOptions
+                            cachedQuery = new CachedObjectDTO
+                            {
+                                ClientDTO = result,
+                                InsertDate = DateTime.Now
+                            };
+
+                            _cache.Set("client", cachedQuery, new MemoryCacheEntryOptions
                             {
                                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3)
                             });
@@ -112,9 +150,10 @@ namespace EcomerceOptimization.Application.Service
                         _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
                         throw;
                     }
-                    catch (Exception)
+                    catch (NullReferenceException)
                     {
-                        throw;
+                        _logger.LogWarning("Client not found!");
+                        return null;
                     }
                 });
         }
@@ -130,12 +169,18 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        ClientEcommerceServiceUoW.ResetUnitOfWork();
-
                         using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
                         {
+                            uow.BeginTransaction();
                             var result = await uow.GetRepository<EcommerceRepository>().CreateClientEcommerceAsync(dto);
+
                             _logger.LogInformation($"Client: {dto.NomeCompleto} successfully created! Client Email: {dto.Email}");
+
+                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
+                            {
+                                update.BeginTransaction();
+                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            }
 
                             return result;
                         }
@@ -168,12 +213,18 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        ClientEcommerceServiceUoW.ResetUnitOfWork();
-
                         using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
                         {
+                            uow.BeginTransaction();
+
                             var result = await uow.GetRepository<EcommerceRepository>().UpdateClientEcommerceAsync(dto);
                             _logger.LogInformation($"Client: {dto.NomeCompleto} successfully updated! Client Email: {dto.Email}");
+
+                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
+                            {
+                                update.BeginTransaction();
+                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            }
 
                             return result;
                         }
@@ -206,14 +257,25 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        ClientEcommerceServiceUoW.ResetUnitOfWork();
-
                         using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
-                        {
-                            var result = await uow.GetRepository<EcommerceRepository>().DeleteClientEcommerceAsync(id);
+                        {                            
+                            uow.BeginTransaction();
+                            
+                            if(!await uow.GetRepository<EcommerceRepository>().DeleteClientEcommerceAsync(id))
+                            {
+                                _logger.LogWarning("Client not Found!");
+                                return false;
+                            }
+
                             _logger.LogInformation($"Client successfully deleted!");
 
-                            return result;
+                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
+                            {
+                                update.BeginTransaction();
+                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            }
+
+                            return true;
                         }
                     }
                     catch (SqlException ex)
@@ -225,6 +287,10 @@ namespace EcomerceOptimization.Application.Service
                     {
                         _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
                         throw;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        return false;
                     }
                     catch (Exception)
                     {

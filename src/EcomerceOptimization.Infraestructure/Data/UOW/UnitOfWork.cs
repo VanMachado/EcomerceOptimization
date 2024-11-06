@@ -22,16 +22,6 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW
             _dbConnection = connection;
         }
 
-        public UnitOfWork(IDbConnection dbConnection,                          
-                         IDbTransaction dbTransaction, 
-                         int commandTimeout)
-        {
-            _id = Guid.NewGuid();
-            _dbConnection = dbConnection;
-            _dbTransaction = dbTransaction;
-            _commandTimeout = commandTimeout;
-        }
-
         public UnitOfWork(IDbConnection connection,                          
                          int commandTimeout)
         {
