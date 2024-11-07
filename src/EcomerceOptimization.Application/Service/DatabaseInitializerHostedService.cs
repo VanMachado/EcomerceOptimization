@@ -31,13 +31,11 @@ namespace EcomerceOptimization.Application.Service
                 }
                 catch (SqlException)
                 {
-                    _logger.LogError("Database is out of service. Please, try again latter");
-                    throw;
+                    _logger.LogError("Database is out of service. Please, try again latter");                    
                 }
                 catch (BrokenCircuitException)
                 {
-                    _logger.LogError("Circuit breaker is open, the service is currently unavailable.");
-                    throw;
+                    _logger.LogError("Circuit breaker is open, the service is currently unavailable.");                    
                 }
                 catch (Exception)
                 {

@@ -6,28 +6,30 @@ namespace EcomerceOptimization.Application.Result
 {
     public class ClientResult
     {
-        public ClientStatus Status { get; set; }
-        public ClientEcommerceDTO Client { get; set; }
+        public ClientStatus Status { get; set; }        
         public string Message { get; set; }
 
-        public ClientResult(ClientStatus status, ClientEcommerceDTO client, string message)
+        public ClientResult(ClientStatus status,
+                           string message)
         {
-            Status = status;
-            Client = client;
+            Status = status;            
             Message = message;
         }
 
         public static ClientResult Created () => 
-            new ClientResult(ClientStatus.Created, null, null);
+            new ClientResult(ClientStatus.Created, null);
 
-        public static ClientResult Updated(ClientEcommerceDTO client) =>
-           new ClientResult(ClientStatus.Updated, client ,null);
+        public static ClientResult Updated() =>
+           new ClientResult(ClientStatus.Updated, null);
 
         public static ClientResult Deleted() =>
-           new ClientResult(ClientStatus.Deleted,null, null);
+           new ClientResult(ClientStatus.Deleted, null);
+
+        public static ClientResult NotFound() =>
+          new ClientResult(ClientStatus.NotFound, null);
 
         public static ClientResult Error () => 
-            new ClientResult(ClientStatus.Error, null, null);
+            new ClientResult(ClientStatus.Error, null);
 
     }
 }

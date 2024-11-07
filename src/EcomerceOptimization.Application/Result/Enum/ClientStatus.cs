@@ -5,6 +5,7 @@
         Created = 1,
         Updated,
         Deleted,
+        NotFound,
         Error
     }
 }

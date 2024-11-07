@@ -36,13 +36,13 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
                 var result = await _service.GetClientByIdAsync(id);
 
                 if (result == null)
-                    return ClientResult.Error().AsActionResult();
+                    return ClientResult.NotFound().AsActionResult();
 
                 return Ok(result);
             }
             catch (Exception)
             {
-                throw;
+                return ClientResult.Error().AsActionResult();
             }
         }
 
@@ -58,13 +58,13 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
                 var results = await _service.GetClienstAsync();
 
                 if (results == null)
-                    return ClientResult.Error().AsActionResult();
+                    return ClientResult.NotFound().AsActionResult();
 
                 return Ok(results);
             }
             catch (Exception)
             {
-                throw;
+                return ClientResult.Error().AsActionResult();
             }
         }
 
@@ -87,7 +87,7 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
             }
             catch (Exception)
             {
-                throw;
+                return ClientResult.Error().AsActionResult();
             }
         }
 
@@ -104,13 +104,13 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
                 var result = await _service.UpdateClientAsync(dto);
 
                 if (result == null)
-                    return ClientResult.Error().AsActionResult();
+                    return ClientResult.NotFound().AsActionResult();
 
-                return ClientResult.Updated(result).AsActionResult();
+                return ClientResult.Updated().AsActionResult();
             }
             catch (Exception)
             {
-                throw;
+                return ClientResult.Error().AsActionResult();
             }
         }
 

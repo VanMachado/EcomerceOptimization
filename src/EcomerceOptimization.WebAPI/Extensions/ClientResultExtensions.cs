@@ -2,6 +2,7 @@
 using EcomerceOptimization.Application.Result;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using EcomerceOptimization.Domain.Entity.DTO;
 
 namespace EcomerceOptimization.WebAPI.Extensions
 {
@@ -13,8 +14,8 @@ namespace EcomerceOptimization.WebAPI.Extensions
                 ClientStatus.Created,
 
                 result =>
-                {
-                    var response = new ClientResult(result.Status, result.Client, $"StatusCode: {HttpStatusCode.Created}. Client successfully created!");
+                {                    
+                    var response = new ClientResult(result.Status, $"StatusCode: {HttpStatusCode.Created}. Client successfully created!");
 
                     return new ObjectResult(response)
                     {
@@ -28,8 +29,7 @@ namespace EcomerceOptimization.WebAPI.Extensions
                 result =>
                 {
                     var updatedResponse = new ClientResult(
-                        ClientStatus.Updated,
-                        result.Client,
+                        ClientStatus.Updated,                       
                         "Client successfully update!"
                     );
 
@@ -46,12 +46,28 @@ namespace EcomerceOptimization.WebAPI.Extensions
                 {
 
                     var deleteResponse = new ClientResult(
-                            ClientStatus.Deleted,
-                            null,
+                            ClientStatus.Deleted,                            
                             "Client successfully deleted!"
                     );
 
                     return new ObjectResult(deleteResponse);
+
+                }
+            },
+            {
+                ClientStatus.NotFound,
+
+                result =>
+                {                    
+                    var notFOundResponse = new ClientResult(
+                            ClientStatus.NotFound,
+                            "Client not found!"
+                    );
+
+                    return new ObjectResult(notFOundResponse)
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotFound,
+                    };
 
                 }
             },
@@ -63,7 +79,6 @@ namespace EcomerceOptimization.WebAPI.Extensions
 
                     var errorResponse = new ClientResult(
                             ClientStatus.Error,  
-                            null,
                             "Client not Found!"
                     );
 
