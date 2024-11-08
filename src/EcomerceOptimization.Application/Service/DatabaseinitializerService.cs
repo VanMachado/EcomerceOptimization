@@ -34,7 +34,7 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        using (var uow = InitializerEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                         {
 
                             var adminExists = await uow.GetRepository<InitializerEcommerceRepository>().CheckAdminQueryAsync("admin", 1);

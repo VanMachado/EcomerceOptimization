@@ -85,14 +85,12 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     transaction: _unitOfWork.Transaction,
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
-                ).ConfigureAwait(false);  
-                _unitOfWork.Commit();
+                ).ConfigureAwait(false);                  
                                        
                 return true;
             }
             catch (Exception)
-            {                
-                _unitOfWork.RollBack();
+            {                                
                 throw;
             }
         }
@@ -118,14 +116,12 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     transaction: _unitOfWork.Transaction,
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
-                ).ConfigureAwait(false);
-                _unitOfWork.Commit();                
+                ).ConfigureAwait(false);                             
 
-                return await GetClientByIdAsync(dto.Id);
+                return dto; 
             }
             catch (Exception)
-            {
-                _unitOfWork.RollBack();
+            {                
                 throw;
             }            
         }
@@ -145,8 +141,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     transaction: _unitOfWork.Transaction,
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
-                ).ConfigureAwait(false);        
-                _unitOfWork.Commit();
+                ).ConfigureAwait(false);                        
 
                 if(result != 1)
                     return false;
@@ -154,8 +149,7 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                 return true;
             }
             catch (Exception)
-            {                      
-                _unitOfWork.RollBack();
+            {                                      
                 throw;
             }
         }
@@ -178,8 +172,8 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     transaction: _unitOfWork.Transaction,
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
-                ).ConfigureAwait(false);
-                _unitOfWork.Commit();                
+                ).ConfigureAwait(false);                            
+                _unitOfWork.Commit();
 
                 return true;
             }
@@ -233,12 +227,10 @@ namespace EcomerceOptimization.Infraestructure.Data.Repository
                     transaction: _unitOfWork.Transaction,
                     commandTimeout: _unitOfWork.CommandTimeout,
                     commandType: CommandType.Text
-                ).ConfigureAwait(false);
-                _unitOfWork.Commit();                                 
+                ).ConfigureAwait(false);                                             
             }
             catch (Exception)
-            {
-                _unitOfWork.RollBack();
+            {                
                 throw;
             }            
         }

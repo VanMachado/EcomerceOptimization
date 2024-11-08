@@ -36,7 +36,7 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                         {
                             if (_cache.TryGetValue("all_clients", out IEnumerable<CachedObjectDTO> cachedQuery))
                             {
@@ -109,13 +109,13 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {
-                        using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                         {
                             if (_cache.TryGetValue("client", out CachedObjectDTO cachedQuery))
                             {
                                 var updateTime = await uow.GetRepository<EcommerceRepository>().GetUpdateTimeAsync();
 
-                                if (cachedQuery.InsertDate >= updateTime)
+                                if (cachedQuery.InsertDate >= updateTime && cachedQuery.ClientDTO.Id == id)
                                 {
                                     _logger.LogInformation("Client found it on user cache");
                                     return cachedQuery.ClientDTO;
@@ -167,37 +167,38 @@ namespace EcomerceOptimization.Application.Service
                 .WrapAsync(circuitBreakerPolicy)
                 .ExecuteAsync(async () =>
                 {
-                    try
+
+                    using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                     {
-                        using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
+                        try
                         {
                             uow.BeginTransaction();
                             var result = await uow.GetRepository<EcommerceRepository>().CreateClientEcommerceAsync(dto);
 
                             _logger.LogInformation($"Client: {dto.NomeCompleto} successfully created! Client Email: {dto.Email}");
 
-                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
-                            {
-                                update.BeginTransaction();
-                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
-                            }
+                            await uow.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            uow.Commit();
 
                             return result;
                         }
-                    }
-                    catch (SqlException ex)
-                    {
-                        _logger.LogError("Database is out of service. Please, try again latter");
-                        throw;
-                    }
-                    catch (BrokenCircuitException ex)
-                    {
-                        _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
-                        throw;
-                    }
-                    catch (Exception)
-                    {
-                        throw;
+                        catch (SqlException ex)
+                        {
+                            _logger.LogError("Database is out of service. Please, try again latter");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (BrokenCircuitException ex)
+                        {
+                            _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (Exception)
+                        {
+                            uow.RollBack();
+                            throw;
+                        }
                     }
                 });
         }
@@ -211,38 +212,39 @@ namespace EcomerceOptimization.Application.Service
                 .WrapAsync(circuitBreakerPolicy)
                 .ExecuteAsync(async () =>
                 {
-                    try
+                    using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                     {
-                        using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
+                        try
                         {
                             uow.BeginTransaction();
-
                             var result = await uow.GetRepository<EcommerceRepository>().UpdateClientEcommerceAsync(dto);
-                            _logger.LogInformation($"Client: {dto.NomeCompleto} successfully updated! Client Email: {dto.Email}");
 
-                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
-                            {
-                                update.BeginTransaction();
-                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
-                            }
+                            _logger.LogInformation($"Client: {dto.Id} successfully updated! New Client Name: {dto.NomeCompleto}, Email: {dto.Email}");
+
+                            await uow.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            uow.Commit();
 
                             return result;
                         }
+                        catch (SqlException ex)
+                        {
+                            _logger.LogError("Database is out of service. Please, try again latter");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (BrokenCircuitException ex)
+                        {
+                            _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (Exception)
+                        {
+                            uow.RollBack();
+                            throw;
+                        }
                     }
-                    catch (SqlException ex)
-                    {
-                        _logger.LogError("Database is out of service. Please, try again latter");
-                        throw;
-                    }
-                    catch (BrokenCircuitException ex)
-                    {
-                        _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
-                        throw;
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+
                 });
         }
 
@@ -255,47 +257,48 @@ namespace EcomerceOptimization.Application.Service
                 .WrapAsync(circuitBreakerPolicy)
                 .ExecuteAsync(async () =>
                 {
-                    try
+                    using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                     {
-                        using (var uow = ClientEcommerceServiceUoW.GetUnitOfWork())
-                        {                            
+                        try
+                        {
                             uow.BeginTransaction();
-                            
-                            if(!await uow.GetRepository<EcommerceRepository>().DeleteClientEcommerceAsync(id))
+
+                            if (!await uow.GetRepository<EcommerceRepository>().DeleteClientEcommerceAsync(id))
                             {
                                 _logger.LogWarning("Client not Found!");
                                 return false;
                             }
 
                             _logger.LogInformation($"Client successfully deleted!");
-
-                            using (var update = ClientEcommerceServiceUoW.GetUnitOfWork())
-                            {
-                                update.BeginTransaction();
-                                await update.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
-                            }
+                            await uow.GetRepository<EcommerceRepository>().RegisterUpdateAsync();
+                            uow.Commit();
 
                             return true;
                         }
+                        catch (SqlException ex)
+                        {
+                            _logger.LogError("Database is out of service. Please, try again latter");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (BrokenCircuitException ex)
+                        {
+                            _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
+                            uow.RollBack();
+                            throw;
+                        }
+                        catch (NullReferenceException)
+                        {
+                            uow.RollBack();
+                            _logger.LogError("Client not found!");
+                            throw;
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
                     }
-                    catch (SqlException ex)
-                    {
-                        _logger.LogError("Database is out of service. Please, try again latter");
-                        throw;
-                    }
-                    catch (BrokenCircuitException ex)
-                    {
-                        _logger.LogError(ex, "Circuit breaker is open, the service is currently unavailable.");
-                        throw;
-                    }
-                    catch (NullReferenceException)
-                    {
-                        return false;
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+
                 });
         }
     }

@@ -31,12 +31,12 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {                        
-                        using (var uow = OrderEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                         {
                             uow.BeginTransaction();
 
                             var result = await uow.GetRepository<EcommerceRepository>().CreateOrderAsync(dto);
-                            _logger.LogInformation($"Order: {dto.Id} successfully created!");
+                            _logger.LogInformation($"Order: {dto.NomeProduto} successfully created!");
 
                             return result;
                         }
@@ -69,7 +69,7 @@ namespace EcomerceOptimization.Application.Service
                 {
                     try
                     {                        
-                        using (var uow = OrderEcommerceServiceUoW.GetUnitOfWork())
+                        using (var uow = EcommerceUoWFactory.GetUnitOfWork())
                         {
                             uow.BeginTransaction();
 

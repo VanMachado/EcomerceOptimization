@@ -19,8 +19,7 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW.Service
                 _connection = new SqlConnection(UnitOfWorkConnectionStringPool.GetConnectionString(_connectionStringName));
                 _connection.Open();                
 
-                _unitOfWork = new UnitOfWork(_connection, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));
-                _unitOfWork.SetRepository(new TokenEcommerceRepository(_unitOfWork));
+                _unitOfWork = new UnitOfWork(_connection, UnitOfWorkConnectionStringPool.GetConnectionTimeout(_connectionStringName));                
             }
 
             return _unitOfWork;

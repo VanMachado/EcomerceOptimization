@@ -14,7 +14,7 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW
         private IDbTransaction _dbTransaction = null;
         private int _commandTimeout = 0;
         private Guid _id = Guid.Empty;
-        Dictionary<string, object> _repository = new Dictionary<string, object>();   
+        Dictionary<Type, object> _repository = new Dictionary<Type, object>();   
 
         public UnitOfWork(IDbConnection connection)
         {
@@ -34,23 +34,25 @@ namespace EcomerceOptimization.Infraestructure.Data.UOW
         IDbTransaction IUnitOfWork.Transaction { get { return _dbTransaction; } }
         Guid IUnitOfWork.Id { get { return _id; } }
         public int CommandTimeout { get { return _commandTimeout; } }
-
-        public T GetRepository<T>()
+                
+        public TRepository GetRepository<TRepository>() where TRepository : class
         {
-            var instance = CreateInstance<T>();
-            return (T)_repository[instance.ToString()];
-        }
+            var type = typeof(TRepository);
+                        
+            if (_repository.ContainsKey(type))
+            {
+                return _repository[type] as TRepository;
+            }
+                        
+            var repositoryInstance = Activator.CreateInstance(type, this) as TRepository;                        
+            _repository[type] = repositoryInstance;
 
-        public void SetRepository(object repository)
-        {
-            if(!_repository.ContainsKey(repository.ToString()))
-                _repository.Add(repository.ToString(), repository);
-        }
+            return repositoryInstance;
+        }    
 
         private object CreateInstance<T>()
         {
             Assembly assembly = Assembly.GetAssembly(typeof(T));
-
             return assembly.CreateInstance(typeof(T).FullName, false);
         }
 

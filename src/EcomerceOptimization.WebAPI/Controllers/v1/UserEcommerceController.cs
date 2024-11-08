@@ -92,7 +92,7 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
         }
 
 
-        [HttpPut]
+        [HttpPut()]
         [Authorize(Roles = "admin")]
         [SwaggerResponse(StatusCodes.Status200OK, "ClientResult", typeof(ClientResult))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized", typeof(UnauthorizedResult))]
