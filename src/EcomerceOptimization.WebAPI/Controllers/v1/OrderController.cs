@@ -58,9 +58,9 @@ namespace EcomerceOptimization.WebAPI.Controllers.v1
                     return BadRequest();
 
                 if (await _service.CreatOrderAsync(dto))
-                    return Created();
+                    return OrderResult.Created().AsActionResult();
 
-                return ClientResult.Error().AsActionResult();
+                return OrderResult.Error().AsActionResult();
             }
             catch (Exception)
             {
