@@ -1,12 +1,9 @@
 ﻿using System.Data.SqlClient;
-using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using EcomerceOptimization.Domain.Interfaces;
 using EcomerceOptimization.Infraestructure.Data.UOW.Service;
-using EcomerceOptimization.Domain.Entity;
 using EcomerceOptimization.Infraestructure.Data.Repository;
-using EcomerceOptimization.Application.Result;
 using Polly.CircuitBreaker;
 
 namespace EcomerceOptimization.Application.Service
